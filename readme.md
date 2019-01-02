@@ -5,7 +5,7 @@
 -----------------
 
 
-**This** is a complete procedure makeing every step done, which starts with taking your own photos on [Raspberry Pi 3 board](https://www.raspberrypi.org) and ends with recognizing your face by the board :-) 
+**This** is a complete procedure makeing every step done, which starts with taking your own photos on [Raspberry Pi 3 board](https://www.raspberrypi.org) and ends with your face recognized by the board :-) 
 Of course, it is implemented with [Tensorflow Lite](https://www.tensorflow.org/lite/). Following the steps guided by the project, developers interested in [TfLite](https://www.tensorflow.org/lite/) can create your integral story armed with the deep-learning technique on [the Pi](https://www.raspberrypi.org).
 
 **1,** Following [Raspberry Pi Software Guide](https://www.raspberrypi.org/learning/software-guide/quickstart), install **Rapibian** onto a  Raspberry Pi 3 board. Then
@@ -17,12 +17,12 @@ Follow [TensorFlow Raspberry Pi Examples](https://github.com/tensorflow/tensorfl
 $raspistill -v
 ```
 
-**2,** On the Pi, create a folder ***"camera"*** and a sub-folder (***"camera/hxz"*** on my case). Take photos of your faces:
+**2,** On the Pi, create a folder **"camera"** and a sub-folder (**"camera/hxz"** on my case). Take photos of your faces:
 ```shell
 $cd hxz
 $raspistill -v -o hua1_%d.jpg -w -512 -h -512 -t 60000 -tl 400 -e jpg -q 100
 ```
-It will generate about 150 photos at ***"hxz"***. You may adjust flags -t (timeout) and -tl (time lapse) to take more photos and do fast.
+It will generate about 150 photos at **"hxz"**. You may adjust flags -t (timeout) and -tl (time lapse) to take more photos and do fast.
 
 **3,** Type following commands on the terminal of your computer, to run a [docker container](https://docs.docker.com/get-started/part2/). 
 ```shell 
@@ -57,12 +57,12 @@ On my case, Ubuntu 18.04 runs for both host and container.
 #python -m scripts.retrain   --bottleneck_dir=tf_files/bottlenecks   --how_many_training_steps=500   --model_dir=tf_files/models/   --summaries_dir=tf_files/training_summaries/"${ARCHITECTURE}"   --output_graph=tf_files/retrained_graph.pb   --output_labels=tf_files/retrained_labels.txt   --architecture="${ARCHITECTURE}"   --image_dir=tf_files/flower_photos
 #tflite_convert   --graph_def_file=tf_files/retrained_graph.pb   --output_file=tf_files/optimized_graph.lite   --input_format=TENSORFLOW_GRAPHDEF   --output_format=TFLITE   --input_shape=1,${IMAGE_SIZE},${IMAGE_SIZE},3   --input_array=input   --output_array=final_result   --inference_type=FLOAT   --input_data_type=FLOAT
 ```
-You will find 2 files created at folder **"tf_files"**: <font color=brown face="arial black">"optimized_graph.lite"</font> and <font color=brown face="arial black">"retrained_labels.txt"</font>
+You will find 2 files created at folder **"tf_files"**: **"optimized_graph.lite"** and **"retrained_labels.txt"**
 
 **7,** Follow [tensorflow/tensorflow
- R1.12 #24194](https://github.com/tensorflow/tensorflow/pull/24194), you could get a Linux executable <font color=brwon face="arial black">"camera" </font>, /tensorflow/tensorflow/contrib/lite/tools/make/gen/rpi_armv7l/bin/camera. 
- Copy the executable from the container to the folder **"camera"** on Pi, along with <font color=brown face="arial black">"optimized_graph.lite"</font> and <font color=brown face="arial black">"retrained_labels.txt"</font>. 
-Run it at **"camera"**:
+ R1.12 #24194](https://github.com/tensorflow/tensorflow/pull/24194), you could get a Linux executable **"camera" **, /tensorflow/tensorflow/contrib/lite/tools/make/gen/rpi_armv7l/bin/camera. 
+ Copy the executable from the container to the folder **"camera"** on Pi, along with **"optimized_graph.lite"** and **"retrained_labels.txt"**. 
+Run app **"camera"** at folder **"camera"**:
 ```shell
 $./camera -f 10 -m optimized_graph.lite -l retrained_labels.txt
 ```
